@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "skylark",
+  "version": "${version}",
+  "name": "Skylark",
+  "description": "Skyblock on Fabric",
+  "authors": [
+    "GniftyGnome"
+  ],
+  "contact": {
+    "website": "http://www.gnomecraft.net/",
+    "repo": "https://github.com/gniftygnome/skylark"
+  },
+  "license": "MIT",
+  "icon": "assets/skylark/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.gnomecraft.skylark.SkylarkClient"
+    ],
+    "main": [
+      "net.gnomecraft.skylark.Skylark"
+    ]
+  },
+  "mixins": [
+    "skylark.mixins.json"
+  ],
+  "accessWidener" : "skylark.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.2"
+  }
+}

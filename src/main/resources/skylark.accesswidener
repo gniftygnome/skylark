@@ -1,0 +1,3 @@
+accessWidener	v1	named
+
+accessible   method   net/minecraft/world/gen/densityfunction/DensityFunctions   method_41103   (Lnet/minecraft/world/gen/chunk/GenerationShapeConfig;Z)Lnet/minecraft/world/gen/noise/SimpleNoiseRouter;
