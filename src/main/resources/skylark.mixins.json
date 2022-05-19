@@ -4,7 +4,9 @@
   "package": "net.gnomecraft.skylark.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "NullChunkGeneratorSettings"
+    "NullChunkGeneration",
+    "NullChunkGeneratorSettings",
+    "ReplaceSetupSpawn"
   ],
   "client": [
   ],

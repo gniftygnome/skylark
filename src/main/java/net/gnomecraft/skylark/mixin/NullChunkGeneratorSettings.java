@@ -19,7 +19,7 @@ public abstract class NullChunkGeneratorSettings {
             locals = LocalCapture.CAPTURE_FAILHARD
     )
     private static void skylark$voidSurfaceSettings(boolean amplified, boolean largeBiomes, CallbackInfoReturnable<ChunkGeneratorSettings> cir, GenerationShapeConfig lv) {
-        cir.setReturnValue(new ChunkGeneratorSettings(lv, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), DensityFunctions.method_41103(lv, false), VanillaSurfaceRules.createOverworldSurfaceRule(), -64, false, false, false, false));
+        cir.setReturnValue(new ChunkGeneratorSettings(lv, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), DensityFunctions.method_41103(lv, false), VanillaSurfaceRules.createOverworldSurfaceRule(), -80, false, false, false, false));
     }
 
     @Inject(method = "hasAquifers",
