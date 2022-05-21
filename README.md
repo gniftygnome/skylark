@@ -11,7 +11,7 @@ check it out.
 Currently implemented features:
 * Disable all Overworld generation.
 * Preserve the distribution of biomes.
-* Generate one Mega Spruce at (0, 0).
+* Generate one Mega Spruce at (0, 120, 0).
 * Spawn the player on the spruce.
 
 ## What might Skylark do eventually?
