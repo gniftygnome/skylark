@@ -1,4 +1,6 @@
 accessWidener	v1	named
 
-accessible method net/minecraft/world/gen/densityfunction/DensityFunctions method_41103 (Lnet/minecraft/world/gen/chunk/GenerationShapeConfig;Z)Lnet/minecraft/world/gen/noise/SimpleNoiseRouter;
 accessible field net/minecraft/world/gen/StructureAccessor world Lnet/minecraft/world/WorldAccess;
+
+#accessible method net/minecraft/world/gen/chunk/ChunkGenerator getBlockBoxForChunk (Lnet/minecraft/world/chunk/Chunk;)Lnet/minecraft/util/math/BlockBox;
+accessible method net/minecraft/world/gen/densityfunction/DensityFunctions method_41103 (Lnet/minecraft/world/gen/chunk/GenerationShapeConfig;Z)Lnet/minecraft/world/gen/noise/SimpleNoiseRouter;

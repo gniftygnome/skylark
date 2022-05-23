@@ -1,5 +1,6 @@
 package net.gnomecraft.skylark.mixin;
 
+import net.gnomecraft.skylark.spawn.SetupSpawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
@@ -8,8 +9,6 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.level.ServerWorldProperties;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,10 +32,8 @@ public abstract class ReplaceSetupSpawn extends ReentrantThreadExecutor<ServerTa
         BlockPos spawnPos = new BlockPos(0, 120, 0);
         WorldChunk spawnChunk = world.getChunk(ChunkSectionPos.getSectionCoord(spawnPos.getX()), ChunkSectionPos.getSectionCoord(spawnPos.getZ()));
 
-        // Generate spawn position placed feature.
-        ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
-        ConfiguredFeature<TreeFeatureConfig, ?> spawnFeature = TreeConfiguredFeatures.MEGA_SPRUCE.value();
-        spawnFeature.generate(world, chunkGenerator, world.random, spawnPos);
+        // Generate a shred spawn platform.
+        SetupSpawn.sharedPlatform(world, spawnPos, spawnChunk);
 
         // Locate and set player spawn.
         BlockPos adjSpawnPos = spawnPos.withY(spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) + 1);
