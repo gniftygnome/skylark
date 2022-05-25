@@ -5,6 +5,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.*;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -24,8 +25,8 @@ public abstract class NullChunkGeneration {
     )
     private void skylark$skipOverworldStructureStarts(DynamicRegistryManager registryManager, StructureAccessor world, Chunk chunk, StructureManager structureManager, long worldSeed, CallbackInfo ci) {
         // Relies on an access widener for StructureAccessor.world.
-        // Also, this approach causes very slow locate times for overworld structures.
-        if (world.world.getDimension().isBedWorking()) {
+        // Also, this approach causes very slow locate times for overworld structures (but see below).
+        if (((ServerWorld) world.world).getRegistryKey().equals(World.OVERWORLD)) {
             ci.cancel();
         }
     }
@@ -36,7 +37,7 @@ public abstract class NullChunkGeneration {
             locals = LocalCapture.NO_CAPTURE
     )
     private void skylark$abortOverworldLocateStructure(ServerWorld arg2, RegistryEntryList<ConfiguredStructureFeature<?, ?>> arg22, BlockPos center, int radius, boolean skipExistingChunks, CallbackInfoReturnable<Pair<BlockPos, RegistryEntry<ConfiguredStructureFeature<?, ?>>>> cir) {
-        if (arg2.getDimension().isBedWorking()) {
+        if (arg2.getRegistryKey().equals(World.OVERWORLD)) {
             cir.setReturnValue(null);
         }
     }
