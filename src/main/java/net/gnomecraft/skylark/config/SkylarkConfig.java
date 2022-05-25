@@ -12,4 +12,10 @@ import net.minecraft.util.Identifier;
 public class SkylarkConfig implements ConfigData {
     @Comment("What do you want as a spawn platform?")
     public Identifier spawnPlatform = new Identifier("minecraft:mega_spruce");
+
+    @Comment("Space teams out around the origin at what radius?  (Zero for shared spawn point.)")
+    public long spawnRingRadius = 0;
+
+    @Comment("Place the spawn platform at what Y level?")
+    public int spawnHeight = 120;
 }

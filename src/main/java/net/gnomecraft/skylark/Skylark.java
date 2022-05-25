@@ -4,12 +4,14 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.gnomecraft.skylark.config.SkylarkConfig;
+import net.gnomecraft.skylark.config.SkylarkState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Skylark implements ModInitializer {
     public static final String modId = "skylark";
     public static final Logger LOGGER = LoggerFactory.getLogger(modId);
+    public static final SkylarkState STATE = new SkylarkState();
 
     @Override
     public void onInitialize() {

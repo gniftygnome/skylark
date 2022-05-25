@@ -1,6 +1,7 @@
 package net.gnomecraft.skylark.mixin;
 
-import net.gnomecraft.skylark.spawn.SetupSpawn;
+import net.gnomecraft.skylark.Skylark;
+import net.gnomecraft.skylark.spawn.SetupSpawnPoint;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
@@ -8,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.level.ServerWorldProperties;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,18 +29,23 @@ public abstract class ReplaceSetupSpawn extends ReentrantThreadExecutor<ServerTa
             cancellable = true,
             locals = LocalCapture.NO_CAPTURE
     )
-    private static void replaceSetupSpawn(ServerWorld world, ServerWorldProperties worldProperties, boolean bonusChest, boolean debugWorld, CallbackInfo ci) {
-        // Defined position for single spawn location.
-        BlockPos spawnPos = new BlockPos(0, 120, 0);
-        WorldChunk spawnChunk = world.getChunk(ChunkSectionPos.getSectionCoord(spawnPos.getX()), ChunkSectionPos.getSectionCoord(spawnPos.getZ()));
+    private static void skylark$replaceSetupSpawn(ServerWorld world, ServerWorldProperties worldProperties, boolean bonusChest, boolean debugWorld, CallbackInfo ci) {
+        if (world.getRegistryKey().equals(World.OVERWORLD)) {
+            // Stow the world for later use.  =)
+            Skylark.STATE.init(world);
 
-        // Generate a shred spawn platform.
-        SetupSpawn.sharedPlatform(world, spawnPos, spawnChunk);
+            // Defined position for single spawn location.
+            BlockPos spawnPos = new BlockPos(0, Skylark.getConfig().spawnHeight, 0);
+            WorldChunk spawnChunk = world.getChunk(ChunkSectionPos.getSectionCoord(spawnPos.getX()), ChunkSectionPos.getSectionCoord(spawnPos.getZ()));
 
-        // Locate and set player spawn.
-        BlockPos adjSpawnPos = spawnPos.withY(spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) + 1);
-        worldProperties.setSpawnPos(adjSpawnPos, 0.0f);
+            // Generate a shared central spawn platform.
+            SetupSpawnPoint.generatePlatform(world, spawnPos, spawnChunk);
 
-        ci.cancel();
+            // Locate and set global player spawn.
+            BlockPos adjSpawnPos = spawnPos.withY(spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) + 1);
+            worldProperties.setSpawnPos(adjSpawnPos, 0.0f);
+
+            ci.cancel();
+        }
     }
 }

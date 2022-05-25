@@ -12,12 +12,13 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeConfiguredFeatures;
 
-public class SetupSpawn {
+public class SetupSpawnPoint {
 
-    public static void sharedPlatform(ServerWorld world, BlockPos spawnPos, Chunk spawnChunk) {
+    public static void generatePlatform(ServerWorld world, BlockPos spawnPos, Chunk spawnChunk) {
         ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
         Identifier configSpawnPlatform = Skylark.getConfig().spawnPlatform;
-        if(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.containsId(configSpawnPlatform)) {
+
+        if (BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.containsId(configSpawnPlatform)) {
             Skylark.LOGGER.warn("Spawn platform structures are currently unsupported!");
         }
         if (Registry.BLOCK.getOrEmpty(configSpawnPlatform).isPresent()) {

@@ -6,7 +6,8 @@
   "mixins": [
     "NullChunkGeneration",
     "NullChunkGeneratorSettings",
-    "ReplaceSetupSpawn"
+    "ReplaceSetupSpawn",
+    "ServerPlayerSpawn"
   ],
   "client": [
   ],
