@@ -7,22 +7,27 @@ You do not need to ask me in order to use this mod in a modpack or to use
 this code in your own mod.  However, I would love to hear about it so I can
 check it out.
 
+See [the wiki](https://github.com/gniftygnome/skylark/wiki) for configuration and details.
+
 ## What does Skylark do today?
 Currently implemented features:
 * Disable all Overworld generation.
 * Preserve the distribution of biomes.
-* Generate one Mega Spruce at (0, 120, 0).
-* Spawn the player on the spruce.
+* Allow generation of any starting feature (trees, etc.).
+  * At a configurable height, and
+  * Randomized from a configured list, which
+  * Defaults to (most of) the Minecraft trees
+* Spawn the player on the generated feature.
+* Option to distribute multiple players either:
+  * All at (0, 0) on a shared spawn feature, or
+  * In a ring of configurable radius centered on (0, 0)
+* Track and persist player default spawn location individually.
 
 ## What might Skylark do eventually?
 Currently planned features:
-* Allow generation of any starting feature (trees, etc.).
-  * Randomized from a set?
 * I think in 1.19 I can allow generation of structures too.
 * Maybe add bonus things specific to finding different biomes?
-* Option to distribute multiple players / teams:
-  * A specific distance apart?
-  * Tracking their spawn location individually.
+* Add a mechanism to put players into teams and spawn teams together.
 
 I will generally add any features I find useful for sky block play but which
 are not already available via other Fabric mods.  Suggestions are welcome.
