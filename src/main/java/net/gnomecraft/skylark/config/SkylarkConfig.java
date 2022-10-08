@@ -21,8 +21,6 @@ public class SkylarkConfig implements ConfigData {
             "fancy_oak",
             "fancy_oak_bees",
             "jungle_tree",
-            "mangrove",
-            "tall_mangrove",
             "mega_jungle_tree",
             "mega_pine",
             "mega_spruce",
