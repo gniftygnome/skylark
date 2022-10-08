@@ -4,7 +4,7 @@ import net.gnomecraft.skylark.Skylark;
 import net.minecraft.block.Block;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.*;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.chunk.Chunk;
@@ -33,7 +33,7 @@ public class SetupSpawnPoint {
             }
 
             // Structure spawn platform
-            if (BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.containsId(configSpawnPlatform)) {
+            if (BuiltinRegistries.STRUCTURE.containsId(configSpawnPlatform)) {
                 Skylark.LOGGER.warn("Spawn platform structures are currently unsupported!");
             }
 

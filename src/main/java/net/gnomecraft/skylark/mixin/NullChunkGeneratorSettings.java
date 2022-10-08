@@ -1,8 +1,9 @@
 package net.gnomecraft.skylark.mixin;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.world.biome.source.util.VanillaBiomeParameters;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.GenerationShapeConfig;
 import net.minecraft.world.gen.densityfunction.DensityFunctions;
 import net.minecraft.world.gen.surfacebuilder.VanillaSurfaceRules;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +19,8 @@ public abstract class NullChunkGeneratorSettings {
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private static void skylark$voidSurfaceSettings(boolean amplified, boolean largeBiomes, CallbackInfoReturnable<ChunkGeneratorSettings> cir, GenerationShapeConfig lv) {
-        cir.setReturnValue(new ChunkGeneratorSettings(lv, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), DensityFunctions.method_41103(lv, false), VanillaSurfaceRules.createOverworldSurfaceRule(), -80, false, false, false, false));
+    private static void skylark$voidSurfaceSettings(boolean amplified, boolean largeBiomes, CallbackInfoReturnable<ChunkGeneratorSettings> cir) {
+        cir.setReturnValue(new ChunkGeneratorSettings(cir.getReturnValue().generationShapeConfig(), Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), DensityFunctions.createSurfaceNoiseRouter(BuiltinRegistries.DENSITY_FUNCTION, false, false), VanillaSurfaceRules.createOverworldSurfaceRule(), new VanillaBiomeParameters().getSpawnSuitabilityNoises(), -80, false, false, false, false));
     }
 
     @Inject(method = "hasAquifers",
