@@ -41,7 +41,7 @@ public class SkylarkState extends PersistentState {
             teamSpawnPos.put(team, spawnPos);
         }
 
-        Skylark.LOGGER.debug(player.getEntityName() + " is in team " + team + " with default spawn at: " + spawnPos);
+        Skylark.LOGGER.debug("{} is in team {} with default spawn at: {}", player.getEntityName(), team, spawnPos);
         return spawnPos;
     }
 

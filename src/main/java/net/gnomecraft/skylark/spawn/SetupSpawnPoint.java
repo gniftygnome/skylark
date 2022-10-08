@@ -27,9 +27,10 @@ public class SetupSpawnPoint {
             // Block spawn platform
             if (Registry.BLOCK.getOrEmpty(configSpawnPlatform).isPresent()) {
                 Block spawnBlock = Registry.BLOCK.get(configSpawnPlatform);
-                Skylark.LOGGER.info("Spawn platform from config is a block: " + spawnBlock);
-                world.setBlockState(spawnPos, spawnBlock.getDefaultState());
-                return;
+                Skylark.LOGGER.info("Spawn platform from config is a block: {}", spawnBlock);
+                if (world.setBlockState(spawnPos, spawnBlock.getDefaultState())) {
+                    return;
+                }
             }
 
             // Structure spawn platform
@@ -41,17 +42,20 @@ public class SetupSpawnPoint {
             if (BuiltinRegistries.CONFIGURED_FEATURE.containsId(configSpawnPlatform)) {
                 ConfiguredFeature<?, ?> spawnFeature = BuiltinRegistries.CONFIGURED_FEATURE.get(configSpawnPlatform);
                 assert(spawnFeature != null);  // Why would somebody add a null feature to the registry?!
-                Skylark.LOGGER.info("Spawn platform from config is a feature: " + spawnFeature);
-                spawnFeature.generate(world, chunkGenerator, world.random, spawnPos);
-                return;
+                Skylark.LOGGER.info("Spawn platform from config is a feature: {}", spawnFeature);
+                if (spawnFeature.generate(world, chunkGenerator, world.random, spawnPos)) {
+                    return;
+                }
             }
 
-            Skylark.LOGGER.warn("Cannot resolve spawn platform from config: " + configSpawnPlatform);
+            Skylark.LOGGER.warn("Cannot resolve spawn platform from config: {}", configSpawnPlatform);
         }
 
         // Default spawn platform
         ConfiguredFeature<?, ?> spawnFeature = TreeConfiguredFeatures.MEGA_SPRUCE.value();
-        Skylark.LOGGER.info("Spawn platform is default feature: " + spawnFeature);
-        spawnFeature.generate(world, chunkGenerator, world.random, spawnPos);
+        Skylark.LOGGER.info("Spawn platform is default feature: {}", spawnFeature);
+        if (!spawnFeature.generate(world, chunkGenerator, world.random, spawnPos)) {
+            Skylark.LOGGER.error("Failed to generate a spawn platform at {}", spawnPos);
+        }
     }
 }
