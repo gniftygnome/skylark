@@ -60,7 +60,7 @@ public class SkylarkState extends PersistentState {
             double posY = Skylark.getConfig().spawnHeight;
             double posX = radius * Math.cos(rotation);
             double posZ = radius * Math.sin(rotation);
-            teamSpawnPos.put(team, new BlockPos(posX, posY, posZ));
+            teamSpawnPos.put(team, BlockPos.ofFloored(posX, posY, posZ));
         }
 
         this.writeState();
@@ -100,7 +100,7 @@ public class SkylarkState extends PersistentState {
             teamSpawnPosNbt.forEach(nbtElement -> {
                 NbtCompound teamSpawnPosEntry = ((NbtCompound) nbtElement);
                 teamSpawnPos.put(teamSpawnPosEntry.getUuid("uuid"),
-                        new BlockPos(teamSpawnPosEntry.getLong("x"),
+                        BlockPos.ofFloored(teamSpawnPosEntry.getLong("x"),
                                 teamSpawnPosEntry.getLong("y"),
                                 teamSpawnPosEntry.getLong("z")
                                 ));
