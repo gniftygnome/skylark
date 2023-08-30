@@ -13,11 +13,16 @@ See [the wiki](https://github.com/gniftygnome/skylark/wiki) for configuration an
 Currently implemented features:
 * Disable all Overworld generation.
 * Preserve the distribution of biomes.
-* Allow generation of any starting feature (trees, etc.).
+* Allow generation of any starting feature (trees, etc.), or
   * At a configurable height, and
   * Randomized from a configured list, which
   * Defaults to (most of) the Minecraft trees
-* Spawn the player on the generated feature.
+* Allow generation of most structures.
+  * There is no ground layer, so
+  * Many vanilla structures will have some defects.
+  * Some vanilla structures override the height (-63 is common).
+* Generate a single chest at the spawn point with configurable items.
+* Spawn the player on the generated feature or structure.
 * Option to distribute multiple players either:
   * All at (0, 0) on a shared spawn feature, or
   * In a ring of configurable radius centered on (0, 0)
@@ -25,7 +30,6 @@ Currently implemented features:
 
 ## What might Skylark do eventually?
 Currently planned features:
-* I think in 1.19 I can allow generation of structures too.
 * Maybe add bonus things specific to finding different biomes?
 * Add a mechanism to put players into teams and spawn teams together.
 

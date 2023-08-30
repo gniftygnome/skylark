@@ -35,4 +35,7 @@ public class SkylarkConfig implements ConfigData {
 
     @Comment("Place the spawn platform at what Y level?")
     public int spawnHeight = 120;
+
+    @Comment("If starterChest has any items listed, a chest will be placed at each spawn point.")
+    public ArrayList<String> starterChest = new ArrayList<>(27);
 }
