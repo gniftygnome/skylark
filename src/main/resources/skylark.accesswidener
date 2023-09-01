@@ -3,3 +3,4 @@ accessWidener	v1	named
 accessible  field  net/minecraft/world/gen/StructureAccessor world Lnet/minecraft/world/WorldAccess;
 
 accessible  method  net/minecraft/world/gen/densityfunction/DensityFunctions createSurfaceNoiseRouter (Lnet/minecraft/registry/RegistryEntryLookup;Lnet/minecraft/registry/RegistryEntryLookup;ZZ)Lnet/minecraft/world/gen/noise/NoiseRouter;
+accessible  method  net/minecraft/world/gen/heightprovider/HeightProviderType register (Ljava/lang/String;Lcom/mojang/serialization/Codec;)Lnet/minecraft/world/gen/heightprovider/HeightProviderType;

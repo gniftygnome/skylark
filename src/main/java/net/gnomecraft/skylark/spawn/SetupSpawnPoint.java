@@ -110,7 +110,7 @@ public class SetupSpawnPoint {
                         int amount = 1;
                         if (splits.length > 1) {
                             try {
-                                amount = MathHelper.clamp(Integer.parseInt(splits[splits.length - 1]), 1, 64);
+                                amount = MathHelper.clamp(Integer.parseInt(splits[splits.length - 1]), 1, item.getMaxCount());
                             } catch (Exception ignored) {}
                         }
                         inventory.setStack(slot, new ItemStack(item, amount));

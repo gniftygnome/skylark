@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#is_overworld",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "start_pool": "skylark:sky_island_small",
+  "size": 1,
+  "start_height": {
+    "type": "skylark:skylark_spawn",
+    "value": {
+      "absolute": 0
+    }
+  },
+  "max_distance_from_center": 64,
+  "use_expansion_hack": false,
+  "spawn_overrides": {},
+  "config": {}
+}

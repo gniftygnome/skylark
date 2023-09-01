@@ -21,6 +21,7 @@ Currently implemented features:
   * There is no ground layer, so
   * Many vanilla structures will have some defects.
   * Some vanilla structures override the height (-63 is common).
+  * A few custom structures are available; see the wiki.
 * Generate a single chest at the spawn point with configurable items.
 * Spawn the player on the generated feature or structure.
 * Option to distribute multiple players either:

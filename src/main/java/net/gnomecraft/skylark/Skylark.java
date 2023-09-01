@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.gnomecraft.skylark.config.SkylarkConfig;
 import net.gnomecraft.skylark.config.SkylarkState;
+import net.gnomecraft.skylark.util.SkylarkSpawnHeightProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +16,11 @@ public class Skylark implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        // Register the Ductwork config
+        // Register the Skylark config
         AutoConfig.register(SkylarkConfig.class, Toml4jConfigSerializer::new);
+
+        // Register our HeightProvider
+        SkylarkSpawnHeightProvider.register();
 
         LOGGER.info("Skylark: activate.");
         LOGGER.info("  For the blackness of the interstellar void was not the dark of an earthly night,");
