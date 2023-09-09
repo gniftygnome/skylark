@@ -30,6 +30,9 @@ public class SkylarkConfig implements ConfigData {
             "super_birch_bees"
     ));
 
+    @Comment("If true, place new players each in their own team; otherwise in the default team.")
+    public boolean separateTeams = false;
+
     @Comment("Space teams out around the origin at what radius?  (Zero for shared spawn point.)")
     public long spawnRingRadius = 0;
 

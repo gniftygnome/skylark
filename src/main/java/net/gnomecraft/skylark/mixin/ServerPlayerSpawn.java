@@ -1,19 +1,16 @@
 package net.gnomecraft.skylark.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import net.gnomecraft.skylark.Skylark;
-import net.gnomecraft.skylark.spawn.SetupSpawnPoint;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerSpawn extends PlayerEntity {
@@ -21,27 +18,27 @@ public abstract class ServerPlayerSpawn extends PlayerEntity {
         super(world, pos, yaw, gameProfile);
     }
 
-    @Redirect(method = "moveToSpawn",
+    @WrapOperation(method = "moveToSpawn",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/server/world/ServerWorld;getSpawnPos()Lnet/minecraft/util/math/BlockPos;"
             ))
-    public BlockPos skylark$getSpawnPos(ServerWorld world) {
-        // Only in the Overworld and only if the players aren't all just using the shared central platform.
-        if (world.getRegistryKey().equals(World.OVERWORLD) && Skylark.getConfig().spawnRingRadius > 0) {
-            // Get the player's personal/team spawn point coordinates.
-            BlockPos spawnPos = Skylark.STATE.getPlayerSpawnPos(world, this);
-            WorldChunk spawnChunk = world.getChunk(ChunkSectionPos.getSectionCoord(spawnPos.getX()), ChunkSectionPos.getSectionCoord(spawnPos.getZ()));
+    public BlockPos skylark$getSpawnPos(ServerWorld world, Operation<BlockPos> original) {
+        // Only in the Overworld.
+        if (world.getRegistryKey().equals(World.OVERWORLD)) {
+            // Stow the world for later use.  =)
+            Skylark.STATE.init(world);
 
-            // Generate a team spawn platform if there's nothing there already.
-            if (spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) < -63) {
-                SetupSpawnPoint.generatePlatform(world, spawnPos, spawnChunk);
+            // Only if the players aren't all just using the shared central platform.
+            if (Skylark.getConfig().spawnRingRadius > 0) {
+                // Get the player's personal/team spawn point coordinates.
+                BlockPos spawnPos = Skylark.STATE.getPlayerSpawnPos(world, this);
+
+                // Make sure there is a spawn platform and it is targeted by the spawn coordinates.
+                return Skylark.STATE.preparePlayerSpawn(spawnPos);
             }
-
-            // Always override the global spawn position in the Overworld.
-            return spawnPos.withY(spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) + 1);
         }
 
         // Pass through to the real getSpawnPos() in other dimensions.
-        return world.getSpawnPos();
+        return original.call(world);
     }
 }

@@ -1,27 +1,51 @@
 package net.gnomecraft.skylark.mixin;
 
 import net.gnomecraft.skylark.Skylark;
-import net.gnomecraft.skylark.spawn.SetupSpawnPoint;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
+import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
-import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.level.ServerWorldProperties;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Map;
+
 @Mixin(MinecraftServer.class)
 public abstract class ReplaceSetupSpawn extends ReentrantThreadExecutor<ServerTask> {
     public ReplaceSetupSpawn(String string) {
         super(string);
+    }
+
+    @Shadow
+    @Final
+    private Map<RegistryKey<World>, ServerWorld> worlds;
+
+    @Inject(method = "createWorlds",
+            at = @At(value = "FIELD",
+                    target = "Lnet/minecraft/server/MinecraftServer;worlds:Ljava/util/Map;",
+                    opcode = Opcodes.GETFIELD,
+                    shift = At.Shift.BY,
+                    by = 2
+            ),
+            locals = LocalCapture.NO_CAPTURE
+    )
+    protected void skylark$acquireOverworld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
+        ServerWorld overworld = worlds.get(World.OVERWORLD);
+        if (overworld != null) {
+            // Stow the world for later use.  =)
+            Skylark.STATE.init(overworld);
+        }
     }
 
     @Inject(method = "setupSpawn",
@@ -36,14 +60,12 @@ public abstract class ReplaceSetupSpawn extends ReentrantThreadExecutor<ServerTa
 
             // Defined position for single spawn location.
             BlockPos spawnPos = new BlockPos(0, Skylark.getConfig().spawnHeight, 0);
-            WorldChunk spawnChunk = world.getChunk(ChunkSectionPos.getSectionCoord(spawnPos.getX()), ChunkSectionPos.getSectionCoord(spawnPos.getZ()));
 
-            // Generate a shared central spawn platform.
-            SetupSpawnPoint.generatePlatform(world, spawnPos, spawnChunk);
+            // Make sure there is a spawn platform and it is targeted by the spawn coordinates.
+            spawnPos = Skylark.STATE.preparePlayerSpawn(spawnPos);
 
-            // Locate and set global player spawn.
-            BlockPos adjSpawnPos = spawnPos.withY(spawnChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, spawnPos.getX() & 0xF, spawnPos.getZ() & 0xF) + 1);
-            worldProperties.setSpawnPos(adjSpawnPos, 0.0f);
+            // Set global player spawn.
+            worldProperties.setSpawnPos(spawnPos, 0.0f);
 
             ci.cancel();
         }

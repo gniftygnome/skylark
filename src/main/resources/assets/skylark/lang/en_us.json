@@ -1,0 +1,18 @@
+{
+  "modmenu.descriptionTranslation.skylark":   "Skyblock on Fabric",
+  "text.autoconfig.skylark.title":            "Skylark Configuration",
+
+  "skylark.command.hint":                     "§6(Try \"§9/skylark help§6\" for command info...)",
+  "skylark.command.help":                     "Command options:\n  §9/skylark help§r - Skylark command info\n  §9/skylark team§r - Team management\n  §9/skylark teleport§r - Teleport players",
+  "skylark.command.help.missing":             "§eThere is no help for the specified command.",
+  "skylark.command.help.team":                "§9/skylark team list§r - List of known teams\n§9/skylark team list keys§r - List of known teams by key\n§9/skylark team spawn [key] [pos]§r - Change team spawn pos by key",
+  "skylark.command.help.teleport":            "§9/skylark teleport spawn [player(s)]§r - Teleports matched players to their team spawn",
+  "skylark.command.team.list.keys":           "§n  Team Key      Team Spawn (ops)     Online Members  ",
+  "skylark.command.team.list.names":          "§n  Team Name     Team Spawn (ops)     Online Members  ",
+  "skylark.command.team.spawn.failed":        "§cFailed to update team spawn position",
+  "skylark.command.team.spawn.success":       "§aSuccessfully updated team spawn position",
+  "skylark.command.teleport.spawn.none":      "§cNo players were found to teleport.",
+  "skylark.command.teleport.spawn.success":   " §aplayer(s) successfully teleported to their team spawn.",
+
+  "skylark.team.default.name":                "Default Team"
+}

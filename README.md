@@ -26,13 +26,13 @@ Currently implemented features:
 * Spawn the player on the generated feature or structure.
 * Option to distribute multiple players either:
   * All at (0, 0) on a shared spawn feature, or
-  * In a ring of configurable radius centered on (0, 0)
-* Track and persist player default spawn location individually.
+  * In a ring of configurable radius centered on (0, 0), or
+  * Based on their Minecraft scoreboard team.
+* Track and persist player/team default spawn location individually.
 
 ## What might Skylark do eventually?
 Currently planned features:
 * Maybe add bonus things specific to finding different biomes?
-* Add a mechanism to put players into teams and spawn teams together.
 
 I will generally add any features I find useful for sky block play but which
 are not already available via other Fabric mods.  Suggestions are welcome.

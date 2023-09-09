@@ -86,19 +86,24 @@ public class SetupSpawnPoint {
 
         // Default spawn platform
         ConfiguredFeature<?, ?> spawnFeature = configuredFeatureRegistry.getOrThrow(TreeConfiguredFeatures.MEGA_SPRUCE);
-        Skylark.LOGGER.info("Spawn platform is default feature: {}", spawnFeature);
         if (!success && spawnFeature.generate(world, chunkGenerator, random, spawnPos)) {
+            Skylark.LOGGER.info("Spawn platform is default feature: {}", spawnFeature);
             success = true;
         }
 
         if (!success) {
             Skylark.LOGGER.error("Failed to generate a spawn platform at {}", spawnPos);
         }
+    }
+
+    public static void generateSpawnChest(ServerWorld world, BlockPos spawnPos) {
+        SkylarkConfig config = Skylark.getConfig();
 
         // Configurable starter chest
         if (config.starterChest.size() > 0) {
             Skylark.LOGGER.info("Adding spawn chest with {} stacks...", config.starterChest.size());
             BlockPos chestPos = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, spawnPos);
+
             world.setBlockState(chestPos, Blocks.CHEST.getDefaultState());
             if (world.getBlockEntity(chestPos) instanceof Inventory inventory) {
                 for (int slot = 0; slot < config.starterChest.size() && slot < inventory.size(); ++slot) {

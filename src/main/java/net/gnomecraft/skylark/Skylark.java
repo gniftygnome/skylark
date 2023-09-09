@@ -3,6 +3,7 @@ package net.gnomecraft.skylark;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.gnomecraft.skylark.commands.SkylarkCommands;
 import net.gnomecraft.skylark.config.SkylarkConfig;
 import net.gnomecraft.skylark.config.SkylarkState;
 import net.gnomecraft.skylark.util.SkylarkSpawnHeightProvider;
@@ -18,6 +19,9 @@ public class Skylark implements ModInitializer {
     public void onInitialize() {
         // Register the Skylark config
         AutoConfig.register(SkylarkConfig.class, Toml4jConfigSerializer::new);
+
+        // Register server commands
+        SkylarkCommands.register();
 
         // Register our HeightProvider
         SkylarkSpawnHeightProvider.register();
