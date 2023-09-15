@@ -4,6 +4,7 @@ import net.gnomecraft.skylark.Skylark;
 import net.gnomecraft.skylark.spawn.SetupSpawnPoint;
 import net.gnomecraft.skylark.util.LandLocator;
 import net.gnomecraft.skylark.util.TeamDescription;
+import net.minecraft.datafixer.DataFixTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -289,7 +290,7 @@ public class SkylarkState extends PersistentState {
         NbtCompound nbtState = null;
 
         try {
-            nbt = world.getPersistentStateManager().readNbt(STATE_ID, STATE_VERSION);
+            nbt = world.getPersistentStateManager().readNbt(STATE_ID, DataFixTypes.LEVEL, STATE_VERSION);
         } catch (IOException e) {
             Skylark.LOGGER.info("No saved state found; starting anew...");
         }
