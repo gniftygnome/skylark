@@ -11,6 +11,7 @@ import net.minecraft.world.gen.heightprovider.HeightProvider;
 import net.minecraft.world.gen.heightprovider.HeightProviderType;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public class SkylarkSpawnHeightProvider extends HeightProvider {
     public static final SkylarkSpawnHeightProvider AT_SPAWN_HEIGHT = new SkylarkSpawnHeightProvider(YOffset.fixed(0));
     public static final Codec<SkylarkSpawnHeightProvider> SKYLARK_SPAWN_CODEC = Codec.either(YOffset.OFFSET_CODEC, RecordCodecBuilder.create(instance -> instance.group(YOffset.OFFSET_CODEC.fieldOf("value").forGetter(provider -> ((SkylarkSpawnHeightProvider)provider).offset)).apply(instance, SkylarkSpawnHeightProvider::new))).xmap(either -> (SkylarkSpawnHeightProvider)either.map(SkylarkSpawnHeightProvider::create, provider -> provider), provider -> Either.left(provider.offset));
