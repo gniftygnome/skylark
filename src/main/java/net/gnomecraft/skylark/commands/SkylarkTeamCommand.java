@@ -64,7 +64,7 @@ public class SkylarkTeamCommand {
                 playerList.append(", ");
             }
             if (keys) {
-                playerList.append("§7" + team.members().get(i).getEntityName() + "§r");
+                playerList.append("§7" + team.members().get(i).getNameForScoreboard() + "§r");
             } else {
                 playerList.append("§7" + team.members().get(i).getDisplayName().getString() + "§r");
             }

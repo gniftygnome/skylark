@@ -129,7 +129,7 @@ public class SkylarkState extends PersistentState {
             spawnPos = getTeamSpawnPos(team);
         }
 
-        Skylark.LOGGER.debug("'{}' is in team '{}' with default spawn at: {}", player.getEntityName(), team, spawnPos);
+        Skylark.LOGGER.debug("'{}' is in team '{}' with default spawn at: {}", player.getNameForScoreboard(), team, spawnPos);
         return spawnPos;
     }
 
@@ -207,7 +207,7 @@ public class SkylarkState extends PersistentState {
             // The team of players who are not on a Minecraft Team is determined by configuration.
             if (Skylark.getConfig().separateTeams) {
                 // Assign a hopefully-unique team name.
-                teamName = PLAYER_PREFIX + player.getEntityName();
+                teamName = PLAYER_PREFIX + player.getNameForScoreboard();
             } else {
                 // Assign all non-Team players to a single default team.
                 teamName = DEFAULT_TEAM;
@@ -234,7 +234,7 @@ public class SkylarkState extends PersistentState {
         } else if (Skylark.getConfig().separateTeams && team.startsWith(PLAYER_PREFIX)) {
             return world.getPlayers().stream()
                     .filter(player -> player.getScoreboardTeam() == null &&
-                            player.getEntityName().compareTo(team.substring(PLAYER_PREFIX.length())) == 0)
+                            player.getNameForScoreboard().compareTo(team.substring(PLAYER_PREFIX.length())) == 0)
                     .toList();
         } else if (team.startsWith(SCOREBOARD_PREFIX)) {
             return world.getPlayers().stream()
@@ -268,7 +268,7 @@ public class SkylarkState extends PersistentState {
             if (team.startsWith(PLAYER_PREFIX)) {
                 String name = team.substring(PLAYER_PREFIX.length());
                 MutableText fancyName = Text.literal(name);
-                List<ServerPlayerEntity> matches = world.getPlayers(player -> name.compareTo(player.getEntityName()) == 0);
+                List<ServerPlayerEntity> matches = world.getPlayers(player -> name.compareTo(player.getNameForScoreboard()) == 0);
                 if (matches.size() > 0 && matches.get(0).getDisplayName() != null) {
                     fancyName = matches.get(0).getDisplayName().copy();
                 }
@@ -312,7 +312,7 @@ public class SkylarkState extends PersistentState {
                         playerEntity = world.getServer().getPlayerManager().getPlayer(teamSpawnPosEntry.getUuid("uuid"));
                     } catch (Exception ignored) {}
                     if (playerEntity != null) {
-                        teamSpawnPos.put(PLAYER_PREFIX + playerEntity.getEntityName(),
+                        teamSpawnPos.put(PLAYER_PREFIX + playerEntity.getNameForScoreboard(),
                                 BlockPos.ofFloored(teamSpawnPosEntry.getLong("x"),
                                         teamSpawnPosEntry.getLong("y"),
                                         teamSpawnPosEntry.getLong("z")

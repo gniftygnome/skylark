@@ -15,7 +15,7 @@ public record TeamDescription(String name, TEAM_TYPES type, Text displayName, Bl
 
     public TeamDescription {
         members = new ArrayList<>(members);
-        members.sort(Comparator.comparing(PlayerEntity::getEntityName));
+        members.sort(Comparator.comparing(PlayerEntity::getNameForScoreboard));
     }
 
     public List<ServerPlayerEntity> members() {
