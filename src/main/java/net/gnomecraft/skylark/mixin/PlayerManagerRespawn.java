@@ -2,9 +2,9 @@ package net.gnomecraft.skylark.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.gnomecraft.skylark.Skylark;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -17,11 +17,14 @@ import org.spongepowered.asm.mixin.injection.At;
 public class PlayerManagerRespawn {
     @WrapOperation(method = "respawnPlayer",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/server/MinecraftServer;getWorld(Lnet/minecraft/registry/RegistryKey;)Lnet/minecraft/server/world/ServerWorld;"
+                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;getServerWorld()Lnet/minecraft/server/world/ServerWorld;"
             ))
-    protected ServerWorld skylark$respawnPlatform(MinecraftServer server, RegistryKey<World> worldKey, Operation<ServerWorld> original, ServerPlayerEntity player, boolean alive) {
+    protected ServerWorld skylark$respawnPlatform(ServerPlayerEntity player, Operation<ServerWorld> original, @Local boolean alive) {
+        ServerWorld world = original.call(player);
+        RegistryKey<World> worldKey = world.getRegistryKey();
+
         if (!alive && (worldKey == null || worldKey.equals(World.OVERWORLD))) {
-            ServerWorld overworld = server.getOverworld();
+            ServerWorld overworld = world.getServer().getOverworld();
 
             // Get the player's team spawn point coordinates.
             BlockPos spawnPos = Skylark.STATE.getPlayerSpawnPos(overworld, player);
@@ -36,6 +39,6 @@ public class PlayerManagerRespawn {
             }
         }
 
-        return original.call(server, worldKey);
+        return world;
     }
 }

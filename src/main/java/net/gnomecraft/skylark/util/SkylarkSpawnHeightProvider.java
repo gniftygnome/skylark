@@ -1,8 +1,6 @@
 package net.gnomecraft.skylark.util;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.MapCodec;
 import net.gnomecraft.skylark.Skylark;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.gen.HeightContext;
@@ -14,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("unused")
 public class SkylarkSpawnHeightProvider extends HeightProvider {
     public static final SkylarkSpawnHeightProvider AT_SPAWN_HEIGHT = new SkylarkSpawnHeightProvider(YOffset.fixed(0));
-    public static final Codec<SkylarkSpawnHeightProvider> SKYLARK_SPAWN_CODEC = Codec.either(YOffset.OFFSET_CODEC, RecordCodecBuilder.create(instance -> instance.group(YOffset.OFFSET_CODEC.fieldOf("value").forGetter(provider -> ((SkylarkSpawnHeightProvider)provider).offset)).apply(instance, SkylarkSpawnHeightProvider::new))).xmap(either -> (SkylarkSpawnHeightProvider)either.map(SkylarkSpawnHeightProvider::create, provider -> provider), provider -> Either.left(provider.offset));
+    public static final MapCodec<SkylarkSpawnHeightProvider> SKYLARK_SPAWN_CODEC = YOffset.OFFSET_CODEC.fieldOf("value").xmap(SkylarkSpawnHeightProvider::new, SkylarkSpawnHeightProvider::getOffset);
     public static final HeightProviderType<SkylarkSpawnHeightProvider> SKYLARK_SPAWN = HeightProviderType.register("skylark:skylark_spawn", SkylarkSpawnHeightProvider.SKYLARK_SPAWN_CODEC);
     private final YOffset offset;
 

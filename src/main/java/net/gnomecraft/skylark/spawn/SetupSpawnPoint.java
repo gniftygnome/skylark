@@ -39,7 +39,7 @@ public class SetupSpawnPoint {
 
         while (platformList.size() > 0) {
             // Yank a random ID from our copy of the config list
-            Identifier configSpawnPlatform = new Identifier(platformList.remove(random.nextInt(platformList.size())));
+            Identifier configSpawnPlatform = Identifier.tryParse(platformList.remove(random.nextInt(platformList.size())));
 
             // Block spawn platform
             if (Registries.BLOCK.getOrEmpty(configSpawnPlatform).isPresent()) {
@@ -108,7 +108,7 @@ public class SetupSpawnPoint {
             if (world.getBlockEntity(chestPos) instanceof Inventory inventory) {
                 for (int slot = 0; slot < config.starterChest.size() && slot < inventory.size(); ++slot) {
                     String[] splits = config.starterChest.get(slot).split(";");
-                    Item item = Registries.ITEM.getOrEmpty(new Identifier(splits[0])).orElse(null);
+                    Item item = Registries.ITEM.getOrEmpty(Identifier.tryParse(splits[0])).orElse(null);
                     if (item == null) {
                         Skylark.LOGGER.debug("Failed to parse starter chest item for slot {}: {}", slot, splits[0]);
                     } else {

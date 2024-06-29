@@ -16,7 +16,7 @@ public class LandLocator {
 
     /*
      * This method is kind of like a specialized version of the search in
-     * the middle of vanilla's ServerPlayerEntity.moveToSpawn() method.
+     * the middle of vanilla's ServerPlayerEntity.getWorldSpawnPos() method.
      *
      * It exists because vanilla's version is not broken out into a separate
      * function, and we need to find a real spawn point for that same method

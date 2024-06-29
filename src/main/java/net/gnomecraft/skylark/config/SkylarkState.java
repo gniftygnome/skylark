@@ -8,6 +8,7 @@ import net.minecraft.datafixer.DataFixTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -140,6 +141,11 @@ public class SkylarkState extends PersistentState {
      * @return The spawn point of the requested team.
      */
     public @NotNull BlockPos getTeamSpawnPos(@NotNull String team) {
+        // The default team is hard-coded to the origin.
+        if (team.equals(DEFAULT_TEAM)) {
+            return BlockPos.ofFloored(0, MathHelper.clamp(Skylark.getConfig().spawnHeight, world.getBottomY() + 1, 180), 0);
+        }
+
         if (!teamSpawnPos.containsKey(team)) {
             int teamCount = teamSpawnPos.size();
             double rotation = 0;
@@ -336,7 +342,7 @@ public class SkylarkState extends PersistentState {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
+    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         NbtList teamSpawnPosNbt = new NbtList();
         teamSpawnPos.forEach((name, blockPos) -> {
             NbtCompound teamSpawnPosEntry = new NbtCompound();

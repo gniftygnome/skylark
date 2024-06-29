@@ -1,7 +1,6 @@
 package net.gnomecraft.skylark.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
 import net.gnomecraft.skylark.Skylark;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerSpawn extends PlayerEntity {
@@ -18,11 +18,8 @@ public abstract class ServerPlayerSpawn extends PlayerEntity {
         super(world, pos, yaw, gameProfile);
     }
 
-    @WrapOperation(method = "moveToSpawn",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/server/world/ServerWorld;getSpawnPos()Lnet/minecraft/util/math/BlockPos;"
-            ))
-    public BlockPos skylark$getSpawnPos(ServerWorld world, Operation<BlockPos> original) {
+    @ModifyVariable(method = "getWorldSpawnPos", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private BlockPos skylark$getSpawnPos(BlockPos basePos, @Local ServerWorld world) {
         // Only in the Overworld.
         if (world.getRegistryKey().equals(World.OVERWORLD)) {
             // Stow the world for later use.  =)
@@ -38,7 +35,8 @@ public abstract class ServerPlayerSpawn extends PlayerEntity {
             }
         }
 
-        // Pass through to the real getSpawnPos() in other dimensions.
-        return original.call(world);
+        // Use the vanilla value in other dimensions.
+        return basePos;
+
     }
 }
