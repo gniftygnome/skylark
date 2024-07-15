@@ -16,7 +16,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static net.gnomecraft.skylark.util.TeamDescription.TEAM_TYPES;
 
@@ -36,7 +36,26 @@ public class SkylarkState extends PersistentState {
     public static final String PLAYER_PREFIX = "skylark.team.player.";
     public static final String SCOREBOARD_PREFIX = "minecraft.team.";
 
-    private final LinkedHashMap<String, BlockPos> teamSpawnPos = new LinkedHashMap<>();
+    // Special-case the default team to make sure we don't accidentally store the default spawn pos.
+    private final LinkedHashMap<String, BlockPos> teamSpawnPos = new LinkedHashMap<>() {
+        @Override
+        public BlockPos get(Object key) {
+            if (key instanceof String keyString && keyString.equals(DEFAULT_TEAM)) {
+                return Skylark.getConfig().getDefaultSpawnPos(world);
+            }
+
+            return super.get(key);
+        }
+
+        @Override
+        public BlockPos put(String key, BlockPos value) {
+            if (key.equals(DEFAULT_TEAM)) {
+                return value;
+            }
+
+            return super.put(key, value);
+        }
+    };
     private ServerWorld world;
 
     private static final String STATE_ID = Skylark.modId + "_state";
@@ -143,7 +162,7 @@ public class SkylarkState extends PersistentState {
     public @NotNull BlockPos getTeamSpawnPos(@NotNull String team) {
         // The default team is hard-coded to the origin.
         if (team.equals(DEFAULT_TEAM)) {
-            return BlockPos.ofFloored(0, MathHelper.clamp(Skylark.getConfig().spawnHeight, world.getBottomY() + 1, 180), 0);
+            return Skylark.getConfig().getDefaultSpawnPos(world);
         }
 
         if (!teamSpawnPos.containsKey(team)) {
@@ -167,10 +186,10 @@ public class SkylarkState extends PersistentState {
 
         BlockPos teamSpawn = teamSpawnPos.get(team);
         if (teamSpawn == null) {
-            // This should never happen; if it does we will use an arbitrary safe position.
+            // This should never happen; if it does we will use the default team (central) spawn position.
             Skylark.LOGGER.error("Data integrity violation in SkylarkState.teamSpawnPos, team '{}'", team);
 
-            teamSpawn = BlockPos.ofFloored(0, MathHelper.clamp(Skylark.getConfig().spawnHeight, world.getBottomY() + 1, 180), 0);
+            teamSpawn = Skylark.getConfig().getDefaultSpawnPos(world);
             teamSpawnPos.put(team, teamSpawn);
 
             this.writeState();
@@ -276,7 +295,7 @@ public class SkylarkState extends PersistentState {
                 MutableText fancyName = Text.literal(name);
                 List<ServerPlayerEntity> matches = world.getPlayers(player -> name.compareTo(player.getNameForScoreboard()) == 0);
                 if (matches.size() > 0 && matches.get(0).getDisplayName() != null) {
-                    fancyName = matches.get(0).getDisplayName().copy();
+                    fancyName = Objects.requireNonNull(matches.get(0).getDisplayName()).copy();
                 }
                 teams.add(new TeamDescription(team, TEAM_TYPES.PLAYER, fancyName, teamSpawnPos.get(team), getTeamMembers(team)));
             }
@@ -336,9 +355,6 @@ public class SkylarkState extends PersistentState {
                 });
             }
         }
-
-        // Safeties to ensure we have default values.
-        teamSpawnPos.computeIfAbsent(DEFAULT_TEAM, team -> BlockPos.ofFloored(0, Skylark.getConfig().spawnHeight, 0));
     }
 
     @Override

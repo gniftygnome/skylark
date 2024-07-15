@@ -23,6 +23,7 @@ import net.minecraft.world.gen.feature.TreeConfiguredFeatures;
 import net.minecraft.world.gen.structure.Structure;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SetupSpawnPoint {
 
@@ -54,7 +55,7 @@ public class SetupSpawnPoint {
             // Structure spawn platform
             if (structureRegistry.containsId(configSpawnPlatform)) {
                 Structure structure = structureRegistry.get(configSpawnPlatform);
-                assert structure != null;
+                Objects.requireNonNull(structure);
 
                 Skylark.LOGGER.info("Spawn platform from config is a structure: {}", configSpawnPlatform);
                 StructureStart structureStart = structure.createStructureStart(world.getRegistryManager(), chunkGenerator, chunkGenerator.getBiomeSource(), world.getChunkManager().getNoiseConfig(), world.getStructureTemplateManager(), world.getSeed(), new ChunkPos(spawnPos), 0, world, biome -> true);

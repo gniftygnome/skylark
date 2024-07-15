@@ -4,6 +4,9 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.gnomecraft.skylark.Skylark;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,4 +44,14 @@ public class SkylarkConfig implements ConfigData {
 
     @Comment("If starterChest has any items listed, a chest will be placed at each spawn point.")
     public ArrayList<String> starterChest = new ArrayList<>(27);
+
+    /**
+     * This method returns the default (central) spawn point for the given world, based on configuration values.
+     *
+     * @param world {@link World} for which to provide the default spawn point
+     * @return {@link BlockPos} of the default spawn point
+     */
+    public BlockPos getDefaultSpawnPos(World world) {
+        return BlockPos.ofFloored(0, MathHelper.clamp(spawnHeight, world.getBottomY() + 1, 180), 0);
+    }
 }
