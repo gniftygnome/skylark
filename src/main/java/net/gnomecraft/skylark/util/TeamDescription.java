@@ -23,7 +23,14 @@ public record TeamDescription(String name, TEAM_TYPES type, Text displayName, Bl
     }
 
     public boolean addMember(ServerPlayerEntity member) {
-        return members.add(member);
+        if (members.contains(member)) {
+            return false;
+        }
+
+        members.add(member);
+        members.sort(Comparator.comparing(PlayerEntity::getNameForScoreboard));
+
+        return true;
     }
 
     public boolean removeMember(ServerPlayerEntity member) {
