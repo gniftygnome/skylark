@@ -13,7 +13,7 @@ import java.util.List;
 
 // Configuration file definition.
 @SuppressWarnings("unused")
-@Config(name = Skylark.modId)
+@Config(name = Skylark.MOD_ID)
 public class SkylarkConfig implements ConfigData {
     @Comment("What do you want as a spawn platform (randomly selected from list)?")
     public ArrayList<String> spawnPlatform = new ArrayList<>(List.of(

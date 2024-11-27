@@ -58,7 +58,7 @@ public class SkylarkState extends PersistentState {
     };
     private ServerWorld world;
 
-    private static final String STATE_ID = Skylark.modId + "_state";
+    private static final String STATE_ID = Skylark.MOD_ID + "_state";
     private static final int STATE_VERSION = 1;
 
     /**

@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Skylark implements ModInitializer {
-    public static final String modId = "skylark";
-    public static final Logger LOGGER = LoggerFactory.getLogger(modId);
+    public static final String MOD_ID = "skylark";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final SkylarkState STATE = new SkylarkState();
 
     @Override
